@@ -1,16 +1,27 @@
-## Description
+## 改动类型
 
-<!-- Instructions and suggestions for crafting your PR -->
+- [ ] 技术博客
+- [ ] 招新通知
+- [ ] 实验室新闻
+- [ ] 在线工具
+- [ ] 站点代码或配置
 
-<!----------------------------------------------------------------------
-- Please structure the PR title as `<type>[optional scope]: <description>`.
-- Clearly list the problem addressed, the reason for the change, and the implementation approach.
-- If this PR resolves an issue, include `resolves #number`.
-- If there are visual changes, consider attaching before/after screenshots.
-- Update necessary documentation or add a new post detailing the changes.
-- Are there any parts you think require more attention from me?
------------------------------------------------------------------------>
+## 改动说明
 
-<!-- Response times may vary, but I aim to be as prompt as possible. -->
+请说明本 PR 改了什么、为什么改。
 
-<!-- Thank you for contributing! Your efforts are appreciated. 🙌 -->
+## 检查项
+
+- [ ] 已阅读 `CONTRIBUTING.md`
+- [ ] 技术博客或工具索引页已填写 `authors`
+- [ ] 已运行 `pnpm check`
+- [ ] 已运行 `pnpm build`
+- [ ] 涉及前端展示时已附截图或录屏
+
+## 工具投稿补充
+
+如果是在线工具 PR，请填写：
+
+- 工具入口：
+- 是否使用硬件 API：
+- 测试浏览器：

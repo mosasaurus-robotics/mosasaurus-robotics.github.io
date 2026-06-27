@@ -1,0 +1,33 @@
+---
+interface Author {
+  name: string
+  github: string
+}
+
+interface Props {
+  authors?: Author[]
+}
+
+const { authors = [] } = Astro.props
+---
+
+{
+  authors.length > 0 && (
+    <span class="inline-flex flex-wrap gap-x-1.5 gap-y-1">
+      {authors.map((author, idx) => (
+        <>
+          {idx > 0 && <span>/</span>}
+          <a
+            class="op-75 hover:op-100"
+            href={`https://github.com/${author.github}`}
+            title={author.name}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            @{author.github}
+          </a>
+        </>
+      ))}
+    </span>
+  )
+}

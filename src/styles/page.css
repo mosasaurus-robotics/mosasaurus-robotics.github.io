@@ -1,4 +1,4 @@
-/* /releases & /prs */
+/* GitHub-style embedded cards retained for Markdown content */
 .github-item-prose h1,
 .github-item-prose h2,
 .github-item-prose h3,
@@ -27,7 +27,7 @@ summary::-webkit-details-marker {
   display: none;
 }
 
-/* /highlights */
+/* Masonry cards */
 .card-item-prose p {
   margin-bottom: 1.1em;
   margin-top: 1.1em;
@@ -39,14 +39,14 @@ summary::-webkit-details-marker {
   --uno: 'hover:(shadow-custom_0_3_20_-5)';
 }
 
-/* /shorts */
+/* Card list */
 .card-grid > *:first-child {
   border-radius: 0.75rem;
 
   --uno: 'hover:(shadow-custom_0_0_15_-3 scale-103 transition-transform)';
 }
 
-/* /photos */
+/* Image grid */
 .photo-view[data-layout='masonry'] .icon-masonry {
   display: block;
 }

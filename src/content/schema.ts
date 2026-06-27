@@ -1,6 +1,23 @@
 import { z } from 'astro:content'
 import type { SchemaContext } from 'astro:content'
 
+const authorSchema = z.object({
+  name: z
+    .string()
+    .min(1)
+    .transform((value) => value.trim()),
+  github: z
+    .string()
+    .min(1)
+    .regex(/^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$/, {
+      message: 'GitHub username must be written without @.',
+    })
+    .transform((value) => value.trim()),
+})
+
+const optionalAuthorsSchema = z.array(authorSchema).default([])
+const requiredAuthorsSchema = z.array(authorSchema).min(1)
+
 /* Pages */
 export const pageSchema = z.object({
   title: z
@@ -36,7 +53,10 @@ export const pageSchema = z.object({
 })
 
 /* Posts */
-export const postSchema = ({ image }: SchemaContext) =>
+export const createPostSchema = (
+  { image }: SchemaContext,
+  options: { requireAuthors?: boolean } = {}
+) =>
   z.object({
     title: z
       .string()
@@ -65,6 +85,12 @@ export const postSchema = ({ image }: SchemaContext) =>
       .describe(
         'Tags for the post. If not needed, leave the field as an empty array or delete it.'
       ),
+    authors: (options.requireAuthors
+      ? requiredAuthorsSchema
+      : optionalAuthorsSchema
+    ).describe(
+      'Authors of the content. Use GitHub username without @ in the `github` field.'
+    ),
     cover: z
       .union([image(), z.string().url()])
       .default('')
@@ -152,64 +178,41 @@ export const postSchema = ({ image }: SchemaContext) =>
       ),
   })
 
-/* Projects */
-export const projectSchema = z.object({
-  id: z.string().describe('**Required**. Name of the project to be displayed.'),
-  link: z
-    .string()
-    .url('Invalid url.')
-    .describe('**Required**. URL linking to the project page or repository.'),
-  desc: z
-    .string()
-    .describe('**Required**. A brief description summarizing the project.'),
-  icon: z
-    .string()
-    .regex(
-      /^i-[\w-]+(:[\w-]+)?$/,
-      'Icon must be in the format `i-<collection>-<icon>` or `i-<collection>:<icon>` as per [UnoCSS](https://unocss.dev/presets/icons) specs.'
-    )
-    .describe(
-      '**Required**. Icon representing the project. It must be in the format `i-<collection>-<icon>` or `i-<collection>:<icon>` as per [UnoCSS](https://unocss.dev/presets/icons) specs. [Check all available icons here](https://icones.js.org/).'
-    ),
-  category: z.string().describe('**Required**. Category of the project.'),
-})
+export const postSchema = (context: SchemaContext) => createPostSchema(context)
 
-/* Photos */
-export const photoSchema = z.object({
-  id: z
-    .string()
-    .describe(
-      '**Required**. File (name/path) of the image in the `src/content/photos/` directory or a remote image URL.'
-    ),
-  desc: z.string().default('').describe('Optional description for the image.'),
-})
+export const authoredPostSchema = (context: SchemaContext) =>
+  createPostSchema(context, { requireAuthors: true })
 
-/* Stremas */
-export const streamSchema = z.object({
-  id: z.string().describe('**Required**. Sets the stream title.'),
-  pubDate: z.coerce
-    .date()
-    .describe(
-      '**Required**. Specifies the publication date. See supported formats [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse#examples).'
-    ),
-  link: z
+/* Tools */
+export const toolSchema = z.object({
+  title: z
     .string()
-    .url('Invalid url.')
-    .describe('**Required**. Specifies the URL link to the stream.'),
-  radio: z
-    .boolean()
-    .default(false)
-    .describe(
-      'Indicates whether the stream is a radio broadcast. If `true`, an icon will be added to the stream item in the list.'
-    ),
-  video: z
-    .boolean()
-    .default(false)
-    .describe(
-      'Indicates whether the stream is a video broadcast. If `true`, an icon will be added to the stream item in the list.'
-    ),
-  platform: z
+    .max(60)
+    .transform((value) => value.trim()),
+  description: z
     .string()
     .default('')
-    .describe('Specifies the platform where the stream is published.'),
+    .transform((value) => value.trim()),
+  pubDate: z.coerce.date(),
+  lastModDate: z.union([z.coerce.date(), z.literal('')]).optional(),
+  authors: requiredAuthorsSchema,
+  category: z
+    .string()
+    .min(1)
+    .transform((value) => value.trim()),
+  tags: z.array(z.string()).default([]),
+  entry: z
+    .string()
+    .regex(
+      /^\/tool-apps\/[^?#]+\/index\.html$/,
+      'Tool entry must point to /tool-apps/<slug>/index.html.'
+    ),
+  embed: z.boolean().default(true),
+  hardwareApis: z
+    .array(z.enum(['serial', 'usb', 'hid', 'bluetooth']))
+    .default([]),
+  ogImage: z.union([z.string(), z.boolean()]).default(true),
+  toc: z.boolean().default(true),
+  search: z.boolean().default(true),
+  draft: z.boolean().default(false),
 })

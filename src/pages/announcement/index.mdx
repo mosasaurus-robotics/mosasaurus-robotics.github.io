@@ -1,8 +1,8 @@
 ---
-title: 技术博客
-description: 征龙凌沧Mosasaurus 实验室技术博客
-subtitle: RoboMaster 实验室技术沉淀与复盘
-bgType: rose
+title: 招新通知
+description: 征龙凌沧Mosasaurus 实验室招新通知
+subtitle: 招新安排、面试说明与任务发布
+bgType: dot
 ogImage: true
 ---
 
@@ -21,6 +21,6 @@ import ListView from '~/components/views/ListView.astro'
     title={frontmatter.title}
     subtitle={frontmatter.subtitle}
   >
-    <ListView collectionType="blog" pageToc={true} pageTag={true} />
+    <ListView collectionType="announcement" pageToc={true} pageTag={true} />
   </StandardLayout>
 </BaseLayout>

@@ -1,0 +1,68 @@
+---
+import { getCollection } from 'astro:content'
+
+import Categorizer from '~/components/base/Categorizer.astro'
+import DesktopAside from '~/components/base/DesktopAside.astro'
+import MobileControl from '~/components/base/MobileControl.astro'
+import Link from '~/components/base/Link.astro'
+
+import { FEATURES } from '~/config'
+import { withBasePath } from '~/utils/path'
+
+const tools = await getCollection('tools', ({ data }) => {
+  return import.meta.env.PROD ? !data.draft : true
+})
+
+const sortedTools = tools.sort((a, b) => {
+  const categoryOrder = a.data.category.localeCompare(
+    b.data.category,
+    'zh-Hans'
+  )
+  if (categoryOrder !== 0) return categoryOrder
+  return a.data.title.localeCompare(b.data.title, 'zh-Hans')
+})
+
+const groupedTools = sortedTools.reduce(
+  (acc: Record<string, typeof sortedTools>, tool) => {
+    ;(acc[tool.data.category] ??= []).push(tool)
+    return acc
+  },
+  {}
+)
+
+const categories = Object.keys(groupedTools)
+const { toc } = FEATURES
+const tocEnabled = Array.isArray(toc) && toc[0] && categories.length > 0
+const gridClass =
+  'grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-3 py-8 mx-auto lt-lgp:max-w-[712px]! lt-md:max-w-[350px]!'
+const cardClass =
+  'group flex flex-col gap-2 px-3.5 pt-3 pb-3.5 rounded-md bg-transparent hover:bg-[#88888811] transition-all duration-300'
+---
+
+<DesktopAside anchors={categories} />
+<MobileControl anchors={categories} />
+
+{
+  sortedTools.length === 0 ? (
+    <div class="py-2 op-50">暂无工具</div>
+  ) : (
+    categories.map((category, idx) => (
+      <section class="slide-enter" style={{ '--enter-stage': idx }}>
+        <Categorizer text={category} needId={tocEnabled} wide={true} />
+        <div class={gridClass}>
+          {groupedTools[category].map((tool) => (
+            <Link class={cardClass} href={withBasePath(`/tools/${tool.id}/`)}>
+              <span class="text-4.4 leading-1.3em">{tool.data.title}</span>
+              <span class="op-50 text-sm font-normal">
+                {tool.data.description}
+              </span>
+              {tool.data.tags.length > 0 && (
+                <span class="op-40 text-sm">{tool.data.tags.join(' / ')}</span>
+              )}
+            </Link>
+          ))}
+        </div>
+      </section>
+    ))
+  )
+}

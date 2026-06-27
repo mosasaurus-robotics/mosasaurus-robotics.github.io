@@ -1,14 +1,14 @@
 ---
-title: 技术博客
-description: 征龙凌沧Mosasaurus 实验室技术博客
-subtitle: RoboMaster 实验室技术沉淀与复盘
-bgType: rose
+title: 在线工具
+description: 征龙凌沧Mosasaurus 实验室在线工具
+subtitle: 电控、嵌入式与各兵种组的网页工具索引
+bgType: dot
 ogImage: true
 ---
 
 import BaseLayout from '~/layouts/BaseLayout.astro'
 import StandardLayout from '~/layouts/StandardLayout.astro'
-import ListView from '~/components/views/ListView.astro'
+import ToolListView from '~/components/views/ToolListView.astro'
 
 <BaseLayout
   title={frontmatter.title}
@@ -17,10 +17,11 @@ import ListView from '~/components/views/ListView.astro'
   ogImage={frontmatter.ogImage}
 >
   <StandardLayout
-    class="prose"
+    class="max-w-300"
     title={frontmatter.title}
     subtitle={frontmatter.subtitle}
+    isCentered={true}
   >
-    <ListView collectionType="blog" pageToc={true} pageTag={true} />
+    <ToolListView />
   </StandardLayout>
 </BaseLayout>

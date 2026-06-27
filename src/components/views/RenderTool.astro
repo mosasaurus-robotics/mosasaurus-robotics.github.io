@@ -1,0 +1,89 @@
+---
+import { render } from 'astro:content'
+
+import BaseLayout from '~/layouts/BaseLayout.astro'
+import StandardLayout from '~/layouts/StandardLayout.astro'
+import ToolMeta from '~/components/base/ToolMeta.astro'
+import Warning from '~/components/base/Warning.astro'
+import DesktopAside from '~/components/base/DesktopAside.astro'
+import MobileControl from '~/components/base/MobileControl.astro'
+import Link from '~/components/base/Link.astro'
+
+import { FEATURES } from '~/config'
+import { withBasePath } from '~/utils/path'
+
+import type { CollectionEntry } from 'astro:content'
+
+interface Props {
+  tool: CollectionEntry<'tools'>
+}
+
+const { tool } = Astro.props
+const { data: frontmatter } = tool
+const { Content, headings } = await render(tool)
+
+const title = frontmatter.title
+const description = frontmatter.description
+const ogImage = frontmatter.ogImage
+const pubDate = frontmatter.pubDate.toISOString()
+const lastModDate =
+  frontmatter.lastModDate && frontmatter.lastModDate.toISOString()
+const authors = frontmatter.authors
+const category = frontmatter.category
+const tags = frontmatter.tags
+const isDraft = frontmatter.draft
+const entry = withBasePath(frontmatter.entry)
+const shouldEmbed = frontmatter.embed && frontmatter.hardwareApis.length === 0
+const search = FEATURES.search
+const isSearchable =
+  Array.isArray(search) &&
+  search[0] &&
+  search[1].includes.includes('tools') &&
+  frontmatter.search
+const searchFilter =
+  isSearchable && search[1].filter ? 'collection:tools' : undefined
+
+const toc = FEATURES.toc
+const tocEnabled = Array.isArray(toc) && toc[0] && frontmatter.toc
+const haveHeadings = tocEnabled && headings.length > 0
+
+const draftWarning = `This is a draft tool that will not be published in production.`
+---
+
+<BaseLayout {title} {description} {ogImage} {pubDate} {lastModDate}>
+  <StandardLayout {title} {isSearchable} {searchFilter}>
+    <Fragment slot="head">
+      <ToolMeta {pubDate} {lastModDate} {authors} {category} {tags} />
+      <div class="flex flex-wrap gap-3 mt-5">
+        <Link class="btn-rose" href={entry} external={true}>
+          <span class="i-ri-external-link-line mr-1.2"></span>
+          新窗口打开
+        </Link>
+      </div>
+    </Fragment>
+    <Fragment slot="article">
+      {isDraft && <Warning html={draftWarning} />}
+      {
+        haveHeadings && (
+          <>
+            <DesktopAside {headings} />
+            <MobileControl {headings} />
+          </>
+        )
+      }
+      <Content />
+      {
+        shouldEmbed ? (
+          <iframe
+            class="w-full min-h-[70vh] mt-8 border border-[#8884] rounded-md bg-white"
+            src={entry}
+            title={title}
+            loading="lazy"
+          />
+        ) : (
+          <Warning html="此工具可能需要浏览器硬件权限，请使用上方按钮在新窗口打开。" />
+        )
+      }
+    </Fragment>
+  </StandardLayout>
+</BaseLayout>

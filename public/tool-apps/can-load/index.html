@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>在线 CAN 负载计算器</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 24px;
+        font-family:
+          Inter,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          sans-serif;
+        color: #1f2937;
+        background: #f8fafc;
+      }
+
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+      }
+
+      label,
+      input {
+        display: block;
+      }
+
+      label {
+        margin-top: 16px;
+        font-weight: 600;
+      }
+
+      input {
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: 6px;
+        padding: 10px 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        font: inherit;
+      }
+
+      output {
+        display: block;
+        margin-top: 24px;
+        padding: 16px;
+        border-radius: 6px;
+        background: white;
+        border: 1px solid #e2e8f0;
+        font-size: 1.25rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>在线 CAN 负载计算器</h1>
+      <p>示例工具：按帧长度、发送频率和波特率粗略估算总线占用率。</p>
+
+      <label for="bits">单帧估算位数</label>
+      <input id="bits" type="number" min="1" value="128" />
+
+      <label for="rate">发送频率 (Hz)</label>
+      <input id="rate" type="number" min="0" value="100" />
+
+      <label for="baud">总线波特率 (bit/s)</label>
+      <input id="baud" type="number" min="1" value="1000000" />
+
+      <output id="result"></output>
+    </main>
+
+    <script>
+      const bits = document.getElementById('bits')
+      const rate = document.getElementById('rate')
+      const baud = document.getElementById('baud')
+      const result = document.getElementById('result')
+
+      function update() {
+        const load =
+          (Number(bits.value) * Number(rate.value)) / Number(baud.value)
+        result.textContent = `估算总线占用率：${(load * 100).toFixed(2)}%`
+      }
+
+      for (const input of [bits, rate, baud]) {
+        input.addEventListener('input', update)
+      }
+
+      update()
+    </script>
+  </body>
+</html>

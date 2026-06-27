@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content'
+import RenderTool from '~/components/views/RenderTool.astro'
+
+export async function getStaticPaths() {
+  const tools = await getCollection('tools', ({ data }) => {
+    return import.meta.env.PROD ? !data.draft : true
+  })
+
+  return tools.map((tool) => ({
+    params: { slug: tool.id },
+    props: { tool },
+  }))
+}
+
+const { tool } = Astro.props
+---
+
+<RenderTool {tool} />

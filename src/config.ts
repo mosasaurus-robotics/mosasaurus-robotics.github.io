@@ -1,134 +1,61 @@
 import type { Site, Ui, Features } from './types'
 
 export const SITE: Site = {
-  website: 'https://astro-antfustyle-theme.vercel.app/',
+  website: 'https://mosasaurus-robotics.github.io/',
   base: '/',
-  title: 'Astro AntfuStyle Theme',
-  description:
-    'A customizable, feature-rich Astro theme for blog and portfolio creation',
-  author: 'Stephanie Lin',
-  lang: 'en',
-  ogLocale: 'en_US',
-  imageDomains: ['cdn.bsky.app', 'images.unsplash.com'],
+  title: '征龙凌沧Mosasaurus',
+  description: 'RoboMaster 实验室技术博客、招新通知、实验室新闻与在线工具',
+  author: '征龙凌沧Mosasaurus',
+  lang: 'zh-Hans',
+  ogLocale: 'zh_CN',
+  imageDomains: [],
 }
 
 export const UI: Ui = {
   internalNavs: [
     {
       path: '/blog',
-      title: 'Blog',
+      title: '技术博客',
       displayMode: 'alwaysText',
-      text: 'Blog',
+      text: '博客',
     },
     {
-      path: '/projects',
-      title: 'Projects',
+      path: '/announcement',
+      title: '招新通知',
       displayMode: 'alwaysText',
-      text: 'Projects',
+      text: '招新',
     },
     {
-      path: '/highlights',
-      title: 'Highlights',
-      displayMode: 'iconToTextOnMobile',
-      text: 'Highlights',
-      icon: 'i-ri-screenshot-line',
+      path: '/news',
+      title: '实验室新闻',
+      displayMode: 'alwaysText',
+      text: '新闻',
     },
     {
-      path: '/photos',
-      title: 'Photos',
-      displayMode: 'iconToTextOnMobile',
-      text: 'Photos',
-      icon: 'i-ri-camera-ai-line',
-    },
-    {
-      path: '/shorts',
-      title: 'Shorts',
-      displayMode: 'iconToTextOnMobile',
-      text: 'Shorts',
-      icon: 'i-meteor-icons-grid',
-    },
-    {
-      path: '/changelog',
-      title: 'Changelog',
-      displayMode: 'iconToTextOnMobile',
-      text: 'Changelog',
-      icon: 'i-ri-draft-line',
+      path: '/tools',
+      title: '在线工具',
+      displayMode: 'alwaysText',
+      text: '工具',
     },
   ],
-  socialLinks: [
-    {
-      link: 'https://github.com/lin-stephanie/astro-antfustyle-theme',
-      title: 'AntfuStyle on Github',
-      displayMode: 'alwaysIcon',
-      icon: 'i-uil-github-alt',
-    },
-    {
-      link: 'https://x.com/astrodotbuild',
-      title: 'Astro on Twitter',
-      displayMode: 'alwaysIcon',
-      icon: 'i-ri-twitter-x-fill',
-    },
-    {
-      link: 'https://bsky.app/profile/astro.build',
-      title: 'Astro on Bluesky',
-      displayMode: 'alwaysIcon',
-      icon: 'i-meteor-icons-bluesky',
-    },
-  ],
+  socialLinks: [],
   navBarLayout: {
     left: [],
-    right: [
-      'internalNavs',
-      'hr',
-      'socialLinks',
-      'hr',
-      'searchButton',
-      'themeButton',
-      'rssLink',
-    ],
+    right: ['internalNavs', 'hr', 'searchButton', 'themeButton', 'rssLink'],
     mergeOnMobile: true,
   },
-  tabbedLayoutTabs: [
-    { title: 'Changelog', path: '/changelog' },
-    { title: 'AstroBlog', path: '/feeds' },
-    { title: 'AstroStreams', path: '/streams' },
-  ],
+  tabbedLayoutTabs: false,
   postView: {
     postMetaStyle: 'minimal',
     useCoverAltAsCaption: true,
   },
-  groupView: {
-    maxGroupColumns: 3,
-    showGroupItemColorOnHover: true,
-  },
-  githubView: {
-    monorepos: [
-      'withastro/astro',
-      'withastro/starlight',
-      'lin-stephanie/astro-loaders',
-    ],
-    mainLogoOverrides: [
-      [/starlight/, 'https://starlight.astro.build/favicon.svg'],
-    ],
-    subLogoMatches: [
-      [/theme/, 'i-unjs-theme-colors'],
-      [/github/, 'https://github.githubassets.com/favicons/favicon.svg'],
-      [/tweet/, 'i-logos-twitter'],
-      [/bluesky/, 'i-logos-bluesky'],
-    ],
-  },
   externalLink: {
-    newTab: false,
+    newTab: true,
     cursorType: '',
     showNewTabIcon: false,
   },
 }
 
-/**
- * Globally controls whether to enable special features:
- *  - Set to `false` or `[false, {...}]` to disable the feature.
- *  - Set to `[true, {...}]` to enable and configure the feature.
- */
 export const FEATURES: Features = {
   slideEnterAnim: [true, { enterStep: 60 }],
   ogImage: [
@@ -148,39 +75,12 @@ export const FEATURES: Features = {
       displayMode: 'content',
     },
   ],
-  share: [
-    true,
-    {
-      twitter: [true, '@ste7lin'],
-      bluesky: [true, '@ste7lin.bsky.social'],
-      mastodon: false,
-      facebook: false,
-      pinterest: false,
-      reddit: false,
-      telegram: false,
-      whatsapp: false,
-      email: false,
-    },
-  ],
-  giscus: [
-    true,
-    {
-      'data-repo': 'lin-stephanie/astro-antfustyle-theme',
-      'data-repo-id': 'R_kgDOLylKbA',
-      'data-category': 'Giscus',
-      'data-category-id': 'DIC_kwDOLylKbM4Cpugn',
-      'data-mapping': 'title',
-      'data-strict': '0',
-      'data-reactions-enabled': '1',
-      'data-emit-metadata': '0',
-      'data-input-position': 'bottom',
-      'data-lang': 'en',
-    },
-  ],
+  share: false,
+  giscus: false,
   search: [
     true,
     {
-      includes: ['blog', 'shorts', 'changelog'],
+      includes: ['blog', 'announcement', 'news', 'tools'],
       filter: true,
       navHighlight: true,
       batchLoadSize: [true, 5],

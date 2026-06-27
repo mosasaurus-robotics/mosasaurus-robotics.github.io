@@ -1,0 +1,32 @@
+---
+import { formatDate } from '~/utils/datetime'
+import AuthorLinks from '~/components/base/AuthorLinks.astro'
+
+interface Author {
+  name: string
+  github: string
+}
+
+interface Props {
+  pubDate: string
+  lastModDate: string | undefined
+  authors: Author[]
+  category: string
+  tags: string[]
+}
+
+const { pubDate, lastModDate, authors, category, tags } = Astro.props
+---
+
+<div class="mt--6! op-50 lt-md:text-sm">
+  <AuthorLinks {authors} />
+  {authors.length > 0 && <span> / </span>}
+  <time datetime={pubDate}>{formatDate(pubDate)}</time>
+  {
+    lastModDate && (
+      <time datetime={lastModDate}> / 更新 {formatDate(lastModDate)}</time>
+    )
+  }
+  <span> / {category}</span>
+  {tags.length > 0 && <span> / {tags.join(' / ')}</span>}
+</div>

@@ -92,7 +92,6 @@ export interface Site {
 
 /* UI */
 export type Icon = `i-${string}-${string}` | `i-${string}:${string}`
-export type RepoWithOwner = `${string}/${string}`
 
 interface BaseNavItem {
   /**
@@ -408,55 +407,14 @@ interface PostView {
   useCoverAltAsCaption: boolean
 }
 
-interface GroupView {
-  /**
-   * Sets the maximum number of columns displayed in the group view.
-   */
-  maxGroupColumns: 2 | 3
-
-  /**
-   * Determines whether group item icons display in color when hovered over.
-   *
-   * If `true`, the icon for the group item will display in its original colors on hover.
-   */
-  showGroupItemColorOnHover: boolean
-}
-
-export interface GitHubView {
-  /**
-   * Defines monorepo repositories using `<owner>/<repo>` format.
-   *
-   * For monorepos, the tag name is used as the primary text for `/releases` page.
-   */
-  monorepos: RepoWithOwner[]
-
-  /**
-   * Configures main logos for repositories or packages (for monorepos).
-   *
-   * Matching supports regex or `<owner>/<repo>` format, prioritized by order,
-   * and defaults to the owner's avatar if no custom logo is specified.
-   */
-  mainLogoOverrides: [RepoWithOwner | RegExp, Url | Icon][]
-
-  /**
-   * Configures auxiliary logos for repositories or packages (for monorepos).
-   *
-   * Matching supports regex or `<owner>/<repo>` format, prioritized by order,
-   * with no logo displayed for unmatched cases.
-   */
-  subLogoMatches: [RepoWithOwner | RegExp, Url | Icon][]
-}
-
 interface ExternalLink {
   /**
    * Controls whether external links are opened in a new tab.
-   * See {@link https://github.com/lin-stephanie/astro-antfustyle-theme/pull/15 #15} for details.
    */
   newTab: boolean
 
   /**
    * Specifies the cursor type for external links when `newTab` is `true`.
-   * See {@link https://github.com/lin-stephanie/astro-antfustyle-theme/pull/15 #15} for details.
    *
    * Accepts {@link https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#keyword standard keywords},
    * {@link https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#url custom URLs},
@@ -469,7 +427,6 @@ interface ExternalLink {
 
   /**
    * Controls whether to add an indicator to external links when `newTab` is `true`.
-   * See {@link https://github.com/lin-stephanie/astro-antfustyle-theme/pull/15 #15} for details.
    */
   showNewTabIcon: boolean
 }
@@ -512,20 +469,6 @@ export interface Ui {
    * Used in `src/components/base/PostMeta.astro`and `src/components/base/PostCover.astro`.
    */
   postView: PostView
-
-  /**
-   * Configures the `/projects` UIs.
-   *
-   * Used in `src/components/views/GroupItem.astro` and `src/components/base/Categorizer.astro`.
-   */
-  groupView: GroupView
-
-  /**
-   * Configures the `/releases` and `/prs` UIs.
-   *
-   * Used in `src/components/views/GithubView.astro`.
-   */
-  githubView: GitHubView
 
   /**
    * Configures external links' behavior and appearance.
@@ -663,74 +606,11 @@ export interface ShareConfig {
   email: boolean
 }
 
-interface GiscusConfig {
-  /**
-   * GitHub repository in the format `owner/repo`.
-   *
-   * @example 'lin-stephanie/astro-antfustyle-theme'
-   */
-  'data-repo': RepoWithOwner
-
-  /**
-   * Unique ID of the GitHub repository.
-   *
-   * @example "R_kgDOLylKbA"
-   */
-  'data-repo-id': string
-
-  /**
-   * Discussion category name.
-   *
-   * @example "Giscus"
-   */
-  'data-category': string
-
-  /**
-   * Unique ID of the discussion category.
-   *
-   * @example "DIC_kwDOLylKbM4Cpugn"
-   */
-  'data-category-id': string
-
-  /**
-   * Mapping between pages and discussions.
-   *
-   * @example 'title'
-   */
-  'data-mapping': string
-
-  /**
-   * Enable strict mapping (1 = true, 0 = false).
-   */
-  'data-strict': '0' | '1'
-
-  /**
-   * Enable reactions (1 = true, 0 = false).
-   */
-  'data-reactions-enabled': '0' | '1'
-
-  /**
-   * Emit discussion metadata (1 = true, 0 = false).
-   */
-  'data-emit-metadata': '0' | '1'
-
-  /**
-   * Position of the comment input box.
-   */
-  'data-input-position': 'top' | 'bottom'
-
-  /**
-   * Language for the Giscus widget UI.
-   */
-  'data-lang': string
-}
-
 interface SearchConfig {
   /**
    * Specify which content collections rendered by `RenderPost.astro` are indexed.
    *
-   * - By default, only `blog` and `changelog` are indexed, as their dynamic routes
-   * (`/blog/[...slug]` and `/changelog/[slug]`) use `RenderPost.astro`.
+   * - By default, `blog`, `announcement`, `news`, and `tools` are indexed.
    * - If needed, see https://pagefind.app/ for adjusting the search implementation.
    */
   includes: string[]
@@ -795,8 +675,7 @@ interface TagConfig {
 
 export interface Features {
   /**
-   * Whether to enable slide-in animation on each page
-   * except the `/highlights`, `/photos`, and `/shorts` pages.
+   * Whether to enable slide-in animation on each page.
    */
   slideEnterAnim: FeatureConfig<slideEnterAnimConfig>
 
@@ -817,8 +696,7 @@ export interface Features {
    *
    * To disable for a specific post or page, set the `toc` field in the frontmatter to `false`.
    *
-   * Note: The feature is not supported on the `/highlights`, `/photos`, `/shorts`, `/releases`
-   * and `/prs` pages.
+   * Note: Some custom pages may choose not to render TOC anchors.
    */
   toc: FeatureConfig<TocConfig>
 
@@ -837,7 +715,7 @@ export interface Features {
    *
    * To disable for a specific post, set the `giscus` field in the frontmatter to `false`.
    */
-  giscus: FeatureConfig<GiscusConfig>
+  giscus: false
 
   /**
    * Whether to enable Pagefind search feature.
