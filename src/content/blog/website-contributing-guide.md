@@ -3,8 +3,8 @@ title: 网站投稿规范速览
 description: 技术博客和在线工具投稿的最小示例
 pubDate: 2026-06-28
 authors:
-  - name: "站点维护者"
-    github: "octocat"
+  - name: "suzumiaoya"
+    github: "suzumiaoya"
 tags: ["网站", "投稿规范"]
 draft: false
 toc: true
