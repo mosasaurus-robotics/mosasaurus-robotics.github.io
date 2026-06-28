@@ -46,6 +46,10 @@ const ogImageURL = new URL(
   Astro.url
 ).href
 
+const iconVersion = '20260628-1'
+const withAssetVersion = (path: string) =>
+  `${withBasePath(path)}?v=${iconVersion}`
+
 // https://jsonld.com/blog-post/
 const blogPostingData = {
   '@context': 'https://schema.org',
@@ -148,12 +152,12 @@ const webPageData = {
 <link rel="canonical" href={canonicalURL} />
 
 <!-- Icon -->
-<link rel="icon" type="image/svg+xml" href={withBasePath('/favicon.svg')} />
-<link rel="icon" sizes="32x32" href={withBasePath('/favicon.ico')} />
-<link rel="apple-touch-icon" href={withBasePath('/apple-touch-icon.png')} />
+<link rel="icon" type="image/svg+xml" href={withAssetVersion('/favicon.svg')} />
+<link rel="icon" sizes="32x32" href={withAssetVersion('/favicon.ico')} />
+<link rel="apple-touch-icon" href={withAssetVersion('/apple-touch-icon.png')} />
 
 <!-- Manifest -->
-<link rel="manifest" href={withBasePath('/app.webmanifest')} />
+<link rel="manifest" href={withAssetVersion('/app.webmanifest')} />
 
 <!-- Sitemap -->
 <link rel="sitemap" href={withBasePath('/sitemap-index.xml')} />

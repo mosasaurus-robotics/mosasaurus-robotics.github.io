@@ -1,6 +1,9 @@
 import { SITE } from '~/config'
 import { withBasePath } from '~/utils/path'
 
+const iconVersion = '20260628-1'
+const withAssetVersion = (path) => `${withBasePath(path)}?v=${iconVersion}`
+
 export async function GET() {
   const manifest = {
     id: withBasePath('/'),
@@ -9,17 +12,17 @@ export async function GET() {
     description: SITE.description,
     icons: [
       {
-        src: withBasePath('icon-192.png'),
+        src: withAssetVersion('icon-192.png'),
         type: 'image/png',
         sizes: '192x192',
       },
       {
-        src: withBasePath('icon-512.png'),
+        src: withAssetVersion('icon-512.png'),
         type: 'image/png',
         sizes: '512x512',
       },
       {
-        src: withBasePath('icon-mask.png'),
+        src: withAssetVersion('icon-mask.png'),
         type: 'image/png',
         sizes: '512x512',
         purpose: 'maskable',
